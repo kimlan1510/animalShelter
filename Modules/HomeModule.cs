@@ -52,6 +52,10 @@ namespace animalShelter
         model.Add("animals", SpeciesAnimals);
         return View["species.cshtml", model];
       };
+      Get["/animals/bybreed"] = _ => {
+        List<Animal> AnimalsByBreed = Animal.ByBreed();
+        return View["animals_by_breed.cshtml", AnimalsByBreed];
+      };
     }
   }
 }

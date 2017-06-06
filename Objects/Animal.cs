@@ -199,6 +199,38 @@ namespace animalShelter
       return foundAnimal;
     }
 
+    public static List<Animal> ByBreed()
+    {
+      List<Animal> AllAnimals = new List<Animal>{};
+
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM animals ORDER BY breed;", conn);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int animalId = rdr.GetInt32(0);
+        string animalName = rdr.GetString(1);
+        string animalGender = rdr.GetString(2);
+        string animalBreed = rdr.GetString(3);
+        string animalDate = rdr.GetString(4);
+        int animalSpeciesId = rdr.GetInt32(5);
+        Animal newAnimal = new Animal(animalName, animalGender, animalBreed, animalDate, animalSpeciesId, animalId);
+        AllAnimals.Add(newAnimal);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return AllAnimals;
+    }
+
 
   }
 }
