@@ -38,6 +38,20 @@ namespace animalShelter
       Assert.Equal(testList, result);
     }
 
+    [Fact]
+    public void Test_Find_FindsSpeciesInDatabase()
+    {
+      //Arrange
+      Species testSpecies = new Species("cat");
+      testSpecies.Save();
+
+      //Act
+      Species foundSpecies = Species.Find(testSpecies.GetId());
+
+      //Assert
+      Assert.Equal(testSpecies, foundSpecies);
+    }
+
 
 
     public void Dispose()

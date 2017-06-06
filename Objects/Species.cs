@@ -84,32 +84,59 @@ namespace animalShelter
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-    SqlCommand cmd = new SqlCommand("INSERT INTO species (name) OUTPUT INSERTED.id VALUES (@SpeciesName);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO species (name) OUTPUT INSERTED.id VALUES (@SpeciesName);", conn);
 
-    SqlParameter nameParameter = new SqlParameter();
-    nameParameter.ParameterName = "@SpeciesName";
-    nameParameter.Value = this.GetName();
-    cmd.Parameters.Add(nameParameter);
-    SqlDataReader rdr = cmd.ExecuteReader();
+      SqlParameter nameParameter = new SqlParameter();
+      nameParameter.ParameterName = "@SpeciesName";
+      nameParameter.Value = this.GetName();
+      cmd.Parameters.Add(nameParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
 
-    while(rdr.Read())
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public static Species Find(int id)
     {
-      this._id = rdr.GetInt32(0);
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM species WHERE id = @SpeciesId;", conn);
+      SqlParameter speciesIdParameter = new SqlParameter();
+      speciesIdParameter.ParameterName = "@SpeciesId";
+      speciesIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(speciesIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundSpeciesId = 0;
+      string foundSpeciesName = null;
+
+      while(rdr.Read())
+      {
+        foundSpeciesId = rdr.GetInt32(0);
+        foundSpeciesName = rdr.GetString(1);
+      }
+      Species foundSpecies = new Species(foundSpeciesName, foundSpeciesId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundSpecies;
     }
-    if (rdr != null)
-    {
-      rdr.Close();
-    }
-    if (conn != null)
-    {
-      conn.Close();
-    }
-
-
-    }
-
-
-
-
   }
 }
