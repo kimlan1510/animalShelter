@@ -79,6 +79,35 @@ namespace animalShelter
       return AllSpecies;
     }
 
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+    SqlCommand cmd = new SqlCommand("INSERT INTO species (name) OUTPUT INSERTED.id VALUES (@SpeciesName);", conn);
+
+    SqlParameter nameParameter = new SqlParameter();
+    nameParameter.ParameterName = "@SpeciesName";
+    nameParameter.Value = this.GetName();
+    cmd.Parameters.Add(nameParameter);
+    SqlDataReader rdr = cmd.ExecuteReader();
+
+    while(rdr.Read())
+    {
+      this._id = rdr.GetInt32(0);
+    }
+    if (rdr != null)
+    {
+      rdr.Close();
+    }
+    if (conn != null)
+    {
+      conn.Close();
+    }
+
+
+    }
+
 
 
 
