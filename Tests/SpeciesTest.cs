@@ -39,6 +39,23 @@ namespace animalShelter
     }
 
     [Fact]
+    public void Test_Save_AssignsIdToSpeciesObject()
+    {
+      //Arrange
+      Species testSpecies = new Species("cat");
+      testSpecies.Save();
+
+      //Act
+      Species savedSpecies = Species.GetAll()[0];
+
+      int result = savedSpecies.GetId();
+      int testId = testSpecies.GetId();
+
+      //Assert
+      Assert.Equal(testId, result);
+    }
+
+    [Fact]
     public void Test_Find_FindsSpeciesInDatabase()
     {
       //Arrange
