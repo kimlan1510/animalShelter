@@ -23,6 +23,25 @@ namespace animalShelter
       _typeId = typeId;
     }
 
+    public override bool Equals(System.Object otherAnimal)
+    {
+      if(!(otherAnimal is Animal))
+      {
+        return false;
+      }
+      else
+      {
+        otherAnimal newAnimal = (Animal) otherAnimal;
+        bool idEquality = (this.GetId() == newAnimal.GetId());
+        bool animalNameEquality = (this.GetName() == newAnimal.GetName());
+        bool animalGenderEquality = (this.GetGender() == newAnimal.GetGender());
+        bool animalBreedEquality = (this.GetBreed() == newAnimal.GetBreed());
+        bool animalDateEquality = (this.GetDate() == newAnimal.GetDate());
+        bool animalTypeIdEquality = (this.GetTypeId() == newAnimal.GetTypeId());
+        return (idEquality && animalNameEquality && animalGenderEquality && animalBreedEquality && animalDateEquality && animalTypeIdEquality);
+      }
+    }
+
     public int GetId()
     {
       return _id;
@@ -48,19 +67,6 @@ namespace animalShelter
       return _typeId;
     }
 
-    public override bool Equals(System.Object otherAnimal)
-    {
-      if(!(otherAnimal is Animal))
-      {
-        return false;
-      }
-      else
-      {
-        otherAnimal newAnimal = (Animal) otherAnimal;
-        bool idEquality = (this.GetId() == newAnimal.GetId());
-        bool animalNameEquality = (this.GetName() == newAnimal.GetName());
-        return (idEquality && animalNameEquality);
-      }
-    }
+
   }
 }
