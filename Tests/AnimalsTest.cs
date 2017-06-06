@@ -35,10 +35,25 @@ namespace animalShelter
 
       //Assert
       Assert.Equal(testList, result);
-
     }
 
+    [Fact]
+    public void Test_Save_AssignsIdToObject()
+    {
+      //Arrange
+      Animal testAnimal = new Animal("Olive", "female", "domestic shorthair", "10-14-1993", 1);
 
+      //Act
+      testAnimal.Save();
+      Animal savedAnimal = Animal.GetAll()[0];
+      Console.WriteLine(savedAnimal.GetId());
+
+      int result = savedAnimal.GetId();
+      int testId = testAnimal.GetId();
+
+      //Assert
+      Assert.Equal(testId, result);
+    }
 
 
 
