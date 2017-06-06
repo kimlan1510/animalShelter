@@ -69,10 +69,29 @@ namespace animalShelter
       Assert.Equal(testSpecies, foundSpecies);
     }
 
+    [Fact]
+    public void Test_GetAnimals_RetrievesAllAnimalsWithSpecies()
+    {
+      Species testSpecies = new Species("cat");
+      testSpecies.Save();
+
+      Animal firstAnimal = new Animal("Olive", "female", "domestic shorthair", "10-14-1993",testSpecies.GetId(), 1);
+      firstAnimal.Save();
+      Animal secondAnimal = new Animal("lulu", "male", "domestic shorthair", "10-14-1994", testSpecies.GetId(), 2);
+      secondAnimal.Save();
+
+
+      List<Animal> testAnimalList = new List<Animal> {firstAnimal, secondAnimal};
+      List<Animal> resultAnimalList = testSpecies.GetAnimals();
+
+      Assert.Equal(testAnimalList, resultAnimalList);
+    }
+
 
 
     public void Dispose()
     {
+      Animal.DeleteAll();
       Species.DeleteAll();
     }
   }
