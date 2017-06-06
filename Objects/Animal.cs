@@ -13,7 +13,7 @@ namespace animalShelter
     private string _date;
     private int _typeId;
 
-    public Animal(string name, string gender, string breed, string date, int Id = 0 ,int typeId)
+    public Animal(string name, string gender, string breed, string date, int typeId, int Id = 0)
     {
       _id = Id;
       _name = name;
@@ -65,6 +65,42 @@ namespace animalShelter
     public int GetTypeId()
     {
       return _typeId;
+    }
+    public void SetTypeId(int typeId)
+    {
+      _typeId = typeId;
+    }
+
+    public static List<Animal> GetAll()
+    {
+      List<Animal> AllAnimals = new List<Animal>{};
+
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM animals;", conn);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        int animalId = rdr.GetInt32(0);
+        string animalName = rdr.GetString(1);
+        string animalGender = rdr.GetString(2);
+        string animalBreed = rdr.GetString(3);
+        string animalDate = rdr.GetString(4);
+        int animalTypeId = rdr.GetInt32(5);
+        Animal newAnimal = new Animal(animalName, animalGender, animalBreed, animalDate, animalTypeId, animalId);
+        AllAnimals.Add(newAnimal);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return AllAnimals;
     }
 
 
