@@ -8,7 +8,7 @@ else
   <ul>
     @foreach (var animal in Model)
     {
-      <li>@animal.GetName()</li>
+      <li><a href="/animals/@animal.GetId()">@animal.GetName()</li>
     }
   </ul>
   <form action="/animals/delete" method="post">
@@ -16,4 +16,4 @@ else
   </form>
 }
 <p><a href="/animals/new">Add a new animal</a></p>
-<p><a href="/">Return home</a></p>
+<p><a href="/">Return to Main Page</a></p>

@@ -17,7 +17,7 @@ namespace animalShelter
       };
       Get["/species"] = _ => {
         List<Species> AllSpecies = Species.GetAll();
-        return View["species.cshtml", AllSpecies];
+        return View["allSpecies.cshtml", AllSpecies];
       };
       Get["/species/new"] = _ => {
         return View["species_form.cshtml"];
@@ -35,6 +35,22 @@ namespace animalShelter
         Animal newAnimal = new Animal(Request.Form["animal-name"], Request.Form["animal-gender"], Request.Form["animal-breed"],Request.Form["animal-date"], Request.Form["species-id"]);
         newAnimal.Save();
         return View["success.cshtml"];
+      };
+      Post["/animals/delete"] = _ => {
+        Animal.DeleteAll();
+        return View["cleared.cshtml"];
+      };
+      Get["/animals/{id}"] = parameters => {
+        Animal selectedAnimal = Animal.Find(parameters.id);
+        return View["animal.cshtml", selectedAnimal];
+      };
+      Get["/species/{id}"] = parameters => {
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        var SelectedSpecies = Species.Find(parameters.id);
+        var SpeciesAnimals = SelectedSpecies.GetAnimals();
+        model.Add("species", SelectedSpecies);
+        model.Add("animals", SpeciesAnimals);
+        return View["species.cshtml", model];
       };
     }
   }
