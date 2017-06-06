@@ -11,16 +11,16 @@ namespace animalShelter
     private string _gender;
     private string _breed;
     private string _date;
-    private int _typeId;
+    private int _speciesId;
 
-    public Animal(string name, string gender, string breed, string date, int typeId, int Id = 0)
+    public Animal(string name, string gender, string breed, string date, int speciesId, int Id = 0)
     {
       _id = Id;
       _name = name;
       _gender = gender;
       _breed = breed;
       _date = date;
-      _typeId = typeId;
+      _speciesId = speciesId;
     }
 
     public override bool Equals(System.Object otherAnimal)
@@ -37,8 +37,8 @@ namespace animalShelter
         bool animalGenderEquality = (this.GetGender() == newAnimal.GetGender());
         bool animalBreedEquality = (this.GetBreed() == newAnimal.GetBreed());
         bool animalDateEquality = (this.GetDate() == newAnimal.GetDate());
-        bool animalTypeIdEquality = (this.GetTypeId() == newAnimal.GetTypeId());
-        return (idEquality && animalNameEquality && animalGenderEquality && animalBreedEquality && animalDateEquality && animalTypeIdEquality);
+        bool animalSpeciesIdEquality = (this.GetSpeciesId() == newAnimal.GetSpeciesId());
+        return (idEquality && animalNameEquality && animalGenderEquality && animalBreedEquality && animalDateEquality && animalSpeciesIdEquality);
       }
     }
 
@@ -62,13 +62,13 @@ namespace animalShelter
     {
       return _date;
     }
-    public int GetTypeId()
+    public int GetSpeciesId()
     {
-      return _typeId;
+      return _speciesId;
     }
-    public void SetTypeId(int typeId)
+    public void SetSpeciesId(int speciesId)
     {
-      _typeId = typeId;
+      _speciesId = speciesId;
     }
 
     public static List<Animal> GetAll()
@@ -88,8 +88,8 @@ namespace animalShelter
         string animalGender = rdr.GetString(2);
         string animalBreed = rdr.GetString(3);
         string animalDate = rdr.GetString(4);
-        int animalTypeId = rdr.GetInt32(5);
-        Animal newAnimal = new Animal(animalName, animalGender, animalBreed, animalDate, animalTypeId, animalId);
+        int animalSpeciesId = rdr.GetInt32(5);
+        Animal newAnimal = new Animal(animalName, animalGender, animalBreed, animalDate, animalSpeciesId, animalId);
         AllAnimals.Add(newAnimal);
       }
       if (rdr != null)
@@ -116,7 +116,7 @@ namespace animalShelter
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO animals (name, gender, breed, admittance, typeId) OUTPUT INSERTED.id VALUES (@AnimalName, @AnimalGender, @AnimalBreed, @AnimalDate, @AnimalTypeId);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO animals (name, gender, breed, admittance, speciesId) OUTPUT INSERTED.id VALUES (@AnimalName, @AnimalGender, @AnimalBreed, @AnimalDate, @AnimalSpeciesId);", conn);
 
       SqlParameter nameParameter = new SqlParameter();
       nameParameter.ParameterName = "@AnimalName";
@@ -134,15 +134,15 @@ namespace animalShelter
       dateParameter.ParameterName = "@AnimalDate";
       dateParameter.Value = this.GetDate();
 
-      SqlParameter typeIdParameter = new SqlParameter();
-      typeIdParameter.ParameterName = "@AnimalTypeId";
-      typeIdParameter.Value = this.GetTypeId();
+      SqlParameter speciesIdParameter = new SqlParameter();
+      speciesIdParameter.ParameterName = "@AnimalSpeciesId";
+      speciesIdParameter.Value = this.GetSpeciesId();
 
       cmd.Parameters.Add(nameParameter);
       cmd.Parameters.Add(genderParameter);
       cmd.Parameters.Add(breedParameter);
       cmd.Parameters.Add(dateParameter);
-      cmd.Parameters.Add(typeIdParameter);
+      cmd.Parameters.Add(speciesIdParameter);
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -176,7 +176,7 @@ namespace animalShelter
       string foundAnimalGender = null;
       string foundAnimalBreed = null;
       string foundAnimalDate = null;
-      int foundAnimalTypeId = 0;
+      int foundAnimalSpeciesId = 0;
       while(rdr.Read())
       {
         foundAnimalId = rdr.GetInt32(0);
@@ -184,9 +184,9 @@ namespace animalShelter
         foundAnimalGender = rdr.GetString(2);
         foundAnimalBreed = rdr.GetString(3);
         foundAnimalDate = rdr.GetString(4);
-        foundAnimalTypeId = rdr.GetInt32(5);
+        foundAnimalSpeciesId = rdr.GetInt32(5);
       }
-      Animal foundAnimal = new Animal(foundAnimalName, foundAnimalGender, foundAnimalBreed, foundAnimalDate, foundAnimalTypeId, foundAnimalId);
+      Animal foundAnimal = new Animal(foundAnimalName, foundAnimalGender, foundAnimalBreed, foundAnimalDate, foundAnimalSpeciesId, foundAnimalId);
 
       if (rdr != null)
       {
