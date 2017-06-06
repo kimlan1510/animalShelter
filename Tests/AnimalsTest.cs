@@ -46,13 +46,26 @@ namespace animalShelter
       //Act
       testAnimal.Save();
       Animal savedAnimal = Animal.GetAll()[0];
-      Console.WriteLine(savedAnimal.GetId());
 
       int result = savedAnimal.GetId();
       int testId = testAnimal.GetId();
 
       //Assert
       Assert.Equal(testId, result);
+    }
+
+    [Fact]
+    public void Test_Find_FindsAnimalInDatabase()
+    {
+      //Arrange
+      Animal testAnimal = new Animal("Olive", "female", "domestic shorthair", "10-14-1993", 1);
+      testAnimal.Save();
+
+      //Act
+      Animal foundAnimal = Animal.Find(testAnimal.GetId());
+
+      //Assert
+      Assert.Equal(testAnimal, foundAnimal);
     }
 
 

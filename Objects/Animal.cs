@@ -148,7 +148,6 @@ namespace animalShelter
       while(rdr.Read())
       {
         this._id = rdr.GetInt32(0);
-        Console.WriteLine(this._id + "in while");
       }
       if (rdr != null)
       {
@@ -158,7 +157,46 @@ namespace animalShelter
       {
         conn.Close();
       }
+    }
 
+    public static Animal Find(int id)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM animals WHERE id = @animalId;", conn);
+      SqlParameter animalIdParameter = new SqlParameter();
+      animalIdParameter.ParameterName = "@AnimalId";
+      animalIdParameter.Value = id.ToString();
+      cmd.Parameters.Add(animalIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundAnimalId = 0;
+      string foundAnimalName = null;
+      string foundAnimalGender = null;
+      string foundAnimalBreed = null;
+      string foundAnimalDate = null;
+      int foundAnimalTypeId = 0;
+      while(rdr.Read())
+      {
+        foundAnimalId = rdr.GetInt32(0);
+        foundAnimalName = rdr.GetString(1);
+        foundAnimalGender = rdr.GetString(2);
+        foundAnimalBreed = rdr.GetString(3);
+        foundAnimalDate = rdr.GetString(4);
+        foundAnimalTypeId = rdr.GetInt32(5);
+      }
+      Animal foundAnimal = new Animal(foundAnimalName, foundAnimalGender, foundAnimalBreed, foundAnimalDate, foundAnimalTypeId, foundAnimalId);
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return foundAnimal;
     }
 
 
