@@ -1,5 +1,5 @@
 using System;
-using System.Collection.Generic;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace animalShelter
@@ -31,7 +31,7 @@ namespace animalShelter
       }
       else
       {
-        otherAnimal newAnimal = (Animal) otherAnimal;
+        Animal newAnimal = (Animal) otherAnimal;
         bool idEquality = (this.GetId() == newAnimal.GetId());
         bool animalNameEquality = (this.GetName() == newAnimal.GetName());
         bool animalGenderEquality = (this.GetGender() == newAnimal.GetGender());
@@ -101,6 +101,14 @@ namespace animalShelter
         conn.Close();
       }
       return AllAnimals;
+    }
+    public static void DeleteAll()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("DELETE FROM animals;", conn);
+      cmd.ExecuteNonQuery();
+      conn.Close();
     }
 
 
