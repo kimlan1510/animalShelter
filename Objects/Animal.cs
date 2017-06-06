@@ -111,6 +111,55 @@ namespace animalShelter
       conn.Close();
     }
 
+    public void Save()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO animals (name, gender, breed, admittance, typeId) OUTPUT INSERTED.id VALUES (@AnimalName, @AnimalGender, @AnimalBreed, @AnimalDate, @AnimalTypeId);", conn);
+
+      SqlParameter nameParameter = new SqlParameter();
+      nameParameter.ParameterName = "@AnimalName";
+      nameParameter.Value = this.GetName();
+
+      SqlParameter genderParameter = new SqlParameter();
+      genderParameter.ParameterName = "@AnimalGender";
+      genderParameter.Value = this.GetGender();
+
+      SqlParameter breedParameter = new SqlParameter();
+      breedParameter.ParameterName = "@AnimalBreed";
+      breedParameter.Value = this.GetBreed();
+
+      SqlParameter dateParameter = new SqlParameter();
+      dateParameter.ParameterName = "@AnimalDate";
+      dateParameter.Value = this.GetDate();
+
+      SqlParameter typeIdParameter = new SqlParameter();
+      typeIdParameter.ParameterName = "@AnimalTypeId";
+      typeIdParameter.Value = this.GetTypeId();
+
+      cmd.Parameters.Add(nameParameter);
+      cmd.Parameters.Add(genderParameter);
+      cmd.Parameters.Add(breedParameter);
+      cmd.Parameters.Add(dateParameter);
+      cmd.Parameters.Add(typeIdParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._id = rdr.GetInt32(0);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+    }
+
 
   }
 }

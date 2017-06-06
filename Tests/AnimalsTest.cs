@@ -22,6 +22,21 @@ namespace animalShelter
       //Assert
       Assert.Equal(0, result);
     }
+    [Fact]
+    public void Test_Save_SavesToDatabase()
+    {
+      //Arrange
+      Animal testAnimal = new Animal("Olive", "female", "domestic shorthair", "10-14-1993", 1);
+
+      //Act
+      testAnimal.Save();
+      List<Animal> result = Animal.GetAll();
+      List<Animal> testList = new List<Animal>{testAnimal};
+
+      //Assert
+      Assert.Equal(testList, result);
+
+    }
 
 
 
